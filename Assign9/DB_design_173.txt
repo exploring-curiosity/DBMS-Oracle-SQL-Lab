@@ -1,0 +1,652 @@
+SQL> @F:\SEM4\DBMS\Assign9\db1.sql
+SQL> rem ***************************************************************************************
+SQL> rem Consider the following relation Company with the set of functional dependencies:
+SQL> rem COMPANY(empid, name, address, bdate, sex, salary, dno, dname, mgr_id, pno, pname, pdno, hrs)
+SQL> rem fd1: empid -> name, address, bdate, sex, salary, dno
+SQL> rem fd2: dno -> dname, mgr_id
+SQL> rem fd3: pno -> pname, pdno where pdno is the DEPARTMENT controlling the PROJECT.
+SQL> rem fd4: empid, pno -> hrs
+SQL> rem Identify the primary key. Given the FD, key attributes now decompose the Company relation into
+SQL> rem various Normal forms.
+SQL> rem To prove that the decomposition is correct: apply the two properties
+SQL> rem a) The lossless-join decomposition.
+SQL> rem b) Preservation of FD.
+SQL> rem For lossless-join decomposition, use the instances as shown below to populate your Company
+SQL> rem relation before decomposition
+SQL> rem INSTANCES AS IN PDF
+SQL> rem From the above instances, its clear that the relation Company has 16 tuples. Join all the decomposed
+SQL> rem relations and prove that the join results in loss-less join decomposition.
+SQL> rem *****************************************************************************************
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> rem The primary key is identified to be empid,pno
+SQL> 
+SQL> rem Creating the company relation
+SQL> 
+SQL> DROP TABLE COMPANY;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE COMPANY
+  2  (
+  3  	     empid NUMBER(9),
+  4  	     name VARCHAR(20),
+  5  	     address VARCHAR2(30),
+  6  	     bdate DATE,
+  7  	     sex CHAR(1),
+  8  	     salary NUMBER(7),
+  9  	     dno NUMBER(2),
+ 10  	     dname VARCHAR2(20),
+ 11  	     mgr_id NUMBER(9),
+ 12  	     pno NUMBER(2),
+ 13  	     pname VARCHAR2(20),
+ 14  	     pdno NUMBER(1),
+ 15  	     hrs NUMBER(3,1),
+ 16  	     CONSTRAINT cmp_pk PRIMARY KEY (empid,pno)
+ 17  );
+
+Table created.
+
+SQL> 
+SQL> rem *******************************************************************************************
+SQL> rem Populating COMPANY based on given instances
+SQL> rem *******************************************************************************************
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     123456789,'John B Smith','731 Fondren, Houston, TX','09-JAN-1965','M',
+  4  	     30000,5,'Research',333445555,1,'ProductX',5,32.5
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     123456789,'John B Smith','731 Fondren, Houston, TX','09-JAN-1965','M',
+  4  	     30000,5,'Research',333445555,2,'ProductY',5,7.5
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     333445555,'Franklin T Wong','638 Voss, Houston, TX','08-DEC-1955','M',
+  4  	     40000,5,'Research',333445555,2,'ProductY',5,10.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     333445555,'Franklin T Wong','638 Voss, Houston, TX','08-DEC-1955','M',
+  4  	     40000,5,'Research',333445555,3,'ProductZ',5,10.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     333445555,'Franklin T Wong','638 Voss, Houston, TX','08-DEC-1955','M',
+  4  	     40000,5,'Research',333445555,10,'Computerization',4,10.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     333445555,'Franklin T Wong','638 Voss, Houston, TX','08-DEC-1955','M',
+  4  	     40000,5,'Research',333445555,20,'Reorganization',1,10.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     999887777,'Alicia J Zelaya','3321 Castle, Spring, TX','19-Jan-1968','F',
+  4  	     25000,4,'Administration',987654321,30,'Newbenefits',4,30.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     999887777,'Alicia J Zelaya','3321 Castle, Spring, TX','19-Jan-1968','F',
+  4  	     25000,4,'Administration',987654321,10,'Computerization',4,10.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     987854321,'Jennifer S Wallace','291 Berry, Bellaire, TX','20-Jun-1941','F',
+  4  	     43000,4,'Administration',987654321,30,'Newbenefits',4,20.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     987854321,'Jennifer S Wallace','291 Berry, Bellaire, TX','20-Jun-1941','F',
+  4  	     43000,4,'Administration',987654321,20,'Reorganization',1,15.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     666884444,'Ramesh K Narayan','975 Fire Oak, Humble, TX','15-Sep-1962','M',
+  4  	     38000,5,'Research',333445555,3,'ProductZ',5,40.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     453453453,'Joyce A English','5631 Rice, Houston, TX','31-Jul-1972','F',
+  4  	     25000,5,'Research',333445555,1,'ProductX',5,20.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     453453453,'Joyce A English','5631 Rice, Houston TX','31-Jul-1972','F',
+  4  	     25000,5,'Research',333445555,2,'ProductY',5,20.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     987987987,'Ahmad V Jabbar','980 Dallas, Houston, TX','29-Mar-1969','M',
+  4  	     25000,4,'Administration',987654321,30,'Newbenefits',4,5.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     987987987,'Ahmad V Jabbar','980 Dallas, Houston, TX','29-Mar-1969','M',
+  4  	     25000,4,'Administration',987654321,10,'Computerization',4,35.0
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO COMPANY VALUES
+  2  (
+  3  	     888665555,'James E Borg','450 Stone, Houston, TX','10-Nov-1937','M',
+  4  	     55000,1,'Headquarters',NULL,20,'Reorganization',1,NULL
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> rem *************************************************************************************
+SQL> rem decomposing to 3NF
+SQL> rem *************************************************************************************
+SQL> 
+SQL> rem *************************************************************************************
+SQL> rem FD1 ->  empid -> name, address, bdate, sex, salary, dno
+SQL> rem creating EMPLOYEE using FD1
+SQL> rem *************************************************************************************
+SQL> 
+SQL> DROP TABLE EMPLOYEE CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE EMPLOYEE
+  2  (
+  3  	     empid NUMBER(9) CONSTRAINT emp_pk PRIMARY KEY,
+  4  	     name VARCHAR2(20) ,
+  5  	     address VARCHAR2(30),
+  6  	     bdate DATE,
+  7  	     sex CHAR(1),
+  8  	     salary NUMBER(7),
+  9  	     dno NUMBER(2)
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> rem *************************************************************************************
+SQL> rem FD2 -> dno -> dname, mgr_id
+SQL> rem Creating DEPARTMENT using FD2
+SQL> rem *************************************************************************************
+SQL> 
+SQL> DROP TABLE DEPARTMENT CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE DEPARTMENT
+  2  (
+  3  	     dno NUMBER(1) CONSTRAINT dept_pk PRIMARY KEY,
+  4  	     dname VARCHAR2(20),
+  5  	     mgr_id NUMBER (9) CONSTRAINT mgr_id_fk REFERENCES EMPLOYEE(empid)
+  6  );
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem FD3 -> pno -> pname, pdno
+SQL> rem Creating PROJECT using FD3
+SQL> rem **************************************************************************************
+SQL> 
+SQL> DROP TABLE PROJECT CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> 
+SQL> create table PROJECT(
+  2  	     pno NUMBER(2) CONSTRAINT pno_pk PRIMARY KEY,
+  3  	     pname VARCHAR2(15),
+  4  	     pdno number(2) CONSTRAINT pdno_fk REFERENCES DEPARTMENT(dno)
+  5  );
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem FD4 -> empid, pno -> hrs
+SQL> rem Creating WORKS_ON using FD3
+SQL> rem **************************************************************************************
+SQL> 
+SQL> DROP TABLE WORKS_ON CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> 
+SQL> create table WORKS_ON(
+  2  	     empid NUMBER(9) CONSTRAINT empid_fk REFERENCES EMPLOYEE(empid),
+  3  	     pno NUMBER(2) CONSTRAINT pno_fk REFERENCES PROJECT(pno),
+  4  	     hours NUMBER(3,1),
+  5  	     CONSTRAINT eid_pno_pk PRIMARY KEY (empid,pno)
+  6  );
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem Populating all 3NF tables created Above
+SQL> rem **************************************************************************************
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem Poplating EMPLOYEE
+SQL> rem **************************************************************************************
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     123456789,'John Smith','731 Fondren,Houston,TX','05-APR-1986','M',30000.00,5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     333445555,'Franklin Wong','638 Voss,Houston,TX','25-OCT-1983','M',40000.00,5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     999887777,'Alicia Zelaya','3321 Castle,Spring,TX','03-MAY-1958','F',25000.00,4
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     987654321,'Jennifer Wallace','291 Berry,Bellaire,TX','28-FEB-1942' ,'F',43000.00,4
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     666884444,'Ramesh Narayan','975 Fire Oak,Humble,TX','04-JAN-1988','M',38000.00,5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     453453453,'Joyce English','5631 Rice,Houston,TX','30-DEC-1988','F',25000.00,5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     987987987,'Ahmad Jabbar','980 Dallas,Houston,TX','05-MAY-1989','M',25000.00,4
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES
+  2  (
+  3  	     888665555,'James Borg','450 Stone,Houston,TX','23-APR-1978','M',55000.00,1
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem Populating DEPARTMENT
+SQL> rem **************************************************************************************
+SQL> 
+SQL> 
+SQL> INSERT INTO DEPARTMENT VALUES
+  2  (
+  3  	     5,'Research',333445555
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO DEPARTMENT VALUES
+  2  (
+  3  	     4,'Administration',987654321
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO DEPARTMENT VALUES
+  2  (
+  3  	     1,'Headquarters',NULL
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem Populating PROJECT
+SQL> rem **************************************************************************************
+SQL> 
+SQL> INSERT INTO PROJECT VALUES
+  2  (
+  3  	     1,'ProductX',5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO PROJECT VALUES
+  2  (
+  3  	     2,'ProductY',5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO PROJECT VALUES
+  2  (
+  3  	     3,'ProductZ',5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO PROJECT VALUES
+  2  (
+  3  	     10,'Computerization',4
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO PROJECT VALUES
+  2  (
+  3  	     20,'Reorganization',1
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO PROJECT VALUES
+  2  (
+  3  	     30,'Newbenefits',4
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> rem **************************************************************************************
+SQL> rem Populating WORKS_ON
+SQL> rem **************************************************************************************
+SQL> 
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     123456789,1,32.5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     123456789,2,7.5
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     666884444,3,40.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     453453453,1,20.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     453453453,2,20.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     333445555,2,10.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     333445555,3,10.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     333445555,10,10.0
+  4  );
+
+1 row created.
+
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     333445555,20,10.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     999887777,30,30.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     999887777,10,10.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     987987987,10,35.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     987987987,30,5.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     987654321,30,20.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     987654321,20,15.0
+  4  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO WORKS_ON VALUES
+  2  (
+  3  	     888665555,20,NULL
+  4  );
+
+1 row created.
+
+SQL> @F:\SEM4\DBMS\Assign9\losslessjoin.sql
+SQL> rem *****************************************************************************************
+SQL> rem Joining the 3NF tables EMPLOYEE,DEPARTMENT,PROJECT,WORKS_ON using NATURAL JOIN
+SQL> rem *****************************************************************************************
+SQL> 
+SQL> SELECT * FROM EMPLOYEE
+  2  	     NATURAL JOIN DEPARTMENT
+  3  	     NATURAL JOIN PROJECT
+  4  	     NATURAL JOIN WORKS_ON
+  5  	     ORDER BY empid;
+
+     EMPID        PNO        DNO NAME                 ADDRESS                        BDATE     S     SALARY DNAME                    MGR_ID PNAME                 PDNO      HOURS                                                                                                                           
+---------- ---------- ---------- -------------------- ------------------------------ --------- - ---------- -------------------- ---------- --------------- ---------- ----------                                                                                                                           
+ 123456789          2          5 John Smith           731 Fondren,Houston,TX         05-APR-86 M      30000 Research              333445555 ProductY                 5        7.5                                                                                                                           
+ 123456789          1          5 John Smith           731 Fondren,Houston,TX         05-APR-86 M      30000 Research              333445555 ProductX                 5       32.5                                                                                                                           
+ 333445555          2          5 Franklin Wong        638 Voss,Houston,TX            25-OCT-83 M      40000 Research              333445555 ProductY                 5         10                                                                                                                           
+ 333445555          3          5 Franklin Wong        638 Voss,Houston,TX            25-OCT-83 M      40000 Research              333445555 ProductZ                 5         10                                                                                                                           
+ 333445555         10          5 Franklin Wong        638 Voss,Houston,TX            25-OCT-83 M      40000 Research              333445555 Computerization          4         10                                                                                                                           
+ 333445555         20          5 Franklin Wong        638 Voss,Houston,TX            25-OCT-83 M      40000 Research              333445555 Reorganization           1         10                                                                                                                           
+ 453453453          1          5 Joyce English        5631 Rice,Houston,TX           30-DEC-88 F      25000 Research              333445555 ProductX                 5         20                                                                                                                           
+ 453453453          2          5 Joyce English        5631 Rice,Houston,TX           30-DEC-88 F      25000 Research              333445555 ProductY                 5         20                                                                                                                           
+ 666884444          3          5 Ramesh Narayan       975 Fire Oak,Humble,TX         04-JAN-88 M      38000 Research              333445555 ProductZ                 5         40                                                                                                                           
+ 888665555         20          1 James Borg           450 Stone,Houston,TX           23-APR-78 M      55000 Headquarters                    Reorganization           1                                                                                                                                      
+ 987654321         30          4 Jennifer Wallace     291 Berry,Bellaire,TX          28-FEB-42 F      43000 Administration        987654321 Newbenefits              4         20                                                                                                                           
+
+     EMPID        PNO        DNO NAME                 ADDRESS                        BDATE     S     SALARY DNAME                    MGR_ID PNAME                 PDNO      HOURS                                                                                                                           
+---------- ---------- ---------- -------------------- ------------------------------ --------- - ---------- -------------------- ---------- --------------- ---------- ----------                                                                                                                           
+ 987654321         20          4 Jennifer Wallace     291 Berry,Bellaire,TX          28-FEB-42 F      43000 Administration        987654321 Reorganization           1         15                                                                                                                           
+ 987987987         10          4 Ahmad Jabbar         980 Dallas,Houston,TX          05-MAY-89 M      25000 Administration        987654321 Computerization          4         35                                                                                                                           
+ 987987987         30          4 Ahmad Jabbar         980 Dallas,Houston,TX          05-MAY-89 M      25000 Administration        987654321 Newbenefits              4          5                                                                                                                           
+ 999887777         30          4 Alicia Zelaya        3321 Castle,Spring,TX          03-MAY-58 F      25000 Administration        987654321 Newbenefits              4         30                                                                                                                           
+ 999887777         10          4 Alicia Zelaya        3321 Castle,Spring,TX          03-MAY-58 F      25000 Administration        987654321 Computerization          4         10                                                                                                                           
+
+16 rows selected.
+
+SQL> 
+SQL> rem *****************************************************************************************
+SQL> rem displaying the 1NF COMPANY Table
+SQL> rem *****************************************************************************************
+SQL> 
+SQL> SELECT * FROM COMPANY
+  2  	     ORDER BY empid;
+
+     EMPID NAME                 ADDRESS                        BDATE     S     SALARY        DNO DNAME                    MGR_ID        PNO PNAME                      PDNO        HRS                                                                                                                      
+---------- -------------------- ------------------------------ --------- - ---------- ---------- -------------------- ---------- ---------- -------------------- ---------- ----------                                                                                                                      
+ 123456789 John B Smith         731 Fondren, Houston, TX       09-JAN-65 M      30000          5 Research              333445555          1 ProductX                      5       32.5                                                                                                                      
+ 123456789 John B Smith         731 Fondren, Houston, TX       09-JAN-65 M      30000          5 Research              333445555          2 ProductY                      5        7.5                                                                                                                      
+ 333445555 Franklin T Wong      638 Voss, Houston, TX          08-DEC-55 M      40000          5 Research              333445555         10 Computerization               4         10                                                                                                                      
+ 333445555 Franklin T Wong      638 Voss, Houston, TX          08-DEC-55 M      40000          5 Research              333445555          3 ProductZ                      5         10                                                                                                                      
+ 333445555 Franklin T Wong      638 Voss, Houston, TX          08-DEC-55 M      40000          5 Research              333445555          2 ProductY                      5         10                                                                                                                      
+ 333445555 Franklin T Wong      638 Voss, Houston, TX          08-DEC-55 M      40000          5 Research              333445555         20 Reorganization                1         10                                                                                                                      
+ 453453453 Joyce A English      5631 Rice, Houston TX          31-JUL-72 F      25000          5 Research              333445555          2 ProductY                      5         20                                                                                                                      
+ 453453453 Joyce A English      5631 Rice, Houston, TX         31-JUL-72 F      25000          5 Research              333445555          1 ProductX                      5         20                                                                                                                      
+ 666884444 Ramesh K Narayan     975 Fire Oak, Humble, TX       15-SEP-62 M      38000          5 Research              333445555          3 ProductZ                      5         40                                                                                                                      
+ 888665555 James E Borg         450 Stone, Houston, TX         10-NOV-37 M      55000          1 Headquarters                            20 Reorganization                1                                                                                                                                 
+ 987854321 Jennifer S Wallace   291 Berry, Bellaire, TX        20-JUN-41 F      43000          4 Administration        987654321         30 Newbenefits                   4         20                                                                                                                      
+
+     EMPID NAME                 ADDRESS                        BDATE     S     SALARY        DNO DNAME                    MGR_ID        PNO PNAME                      PDNO        HRS                                                                                                                      
+---------- -------------------- ------------------------------ --------- - ---------- ---------- -------------------- ---------- ---------- -------------------- ---------- ----------                                                                                                                      
+ 987854321 Jennifer S Wallace   291 Berry, Bellaire, TX        20-JUN-41 F      43000          4 Administration        987654321         20 Reorganization                1         15                                                                                                                      
+ 987987987 Ahmad V Jabbar       980 Dallas, Houston, TX        29-MAR-69 M      25000          4 Administration        987654321         10 Computerization               4         35                                                                                                                      
+ 987987987 Ahmad V Jabbar       980 Dallas, Houston, TX        29-MAR-69 M      25000          4 Administration        987654321         30 Newbenefits                   4          5                                                                                                                      
+ 999887777 Alicia J Zelaya      3321 Castle, Spring, TX        19-JAN-68 F      25000          4 Administration        987654321         30 Newbenefits                   4         30                                                                                                                      
+ 999887777 Alicia J Zelaya      3321 Castle, Spring, TX        19-JAN-68 F      25000          4 Administration        987654321         10 Computerization               4         10                                                                                                                      
+
+16 rows selected.
+
+SQL> 
+SQL> rem *****************************************************************************************
+SQL> rem INFERENCE : Join of 3NF decomposed tables has given the same result as that of the
+SQL> rem	     1NF table COMPANY
+SQL> rem	     So LOSSLESS JOIN property is preserved
+SQL> 
+SQL> SPOOL OFF

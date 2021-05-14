@@ -1,0 +1,449 @@
+SQL> @F:\SEM4\DBMS\Assign6\pr_funcs.sql
+SQL> rem *************************************************************
+SQL> rem R Sudharshan
+SQL> rem 185001173	     PROCEDURES AND FUNCTIONS
+SQL> rem CSE C
+SQL> rem **************************************************************
+SQL> 
+SQL> 
+SQL> @F:\SEM4\DBMS\Assign6\Pizza_DB.sql
+SQL> --*****************************************************
+SQL> --UCS1412				     B.Senthil Kumar
+SQL> --Database Lab			     Asst. Prof
+SQL> -- 			 Computer Science Department
+SQL> -- 			  SSN College of Engineering
+SQL> -- 				  senthil@ssn.edu.in
+SQL> --*****************************************************
+SQL> -- 	       PIZZA ORDERING DATASET
+SQL> -- 		Version 1.0
+SQL> -- 	       February 05, 2015
+SQL> --*****************************************************
+SQL> --Sources:
+SQL> -- 	This dataset is prepared for the assignment
+SQL> --      on DML, PL/SQL blocks in Database Programming.
+SQL> --      This is a test dataset - pizza ordered on 28 & 29th Jun 2015.
+SQL> --      Do NOT MODIFY the instances.
+SQL> --
+SQL> --******************************************************
+SQL> set serveroutput on;
+SQL> set echo on;
+SQL> 
+SQL> DROP TABLE order_list;
+
+Table dropped.
+
+SQL> DROP TABLE orders;
+
+Table dropped.
+
+SQL> DROP TABLE pizza;
+
+Table dropped.
+
+SQL> DROP TABLE customer;
+
+Table dropped.
+
+SQL> 
+SQL> create table customer
+  2  (
+  3  cust_id varchar2(4) constraint cust_pk PRIMARY KEY,
+  4  cust_name varchar2(20),
+  5  address varchar2(30),
+  6  phone number(10)
+  7  );
+
+Table created.
+
+SQL> 
+SQL> create table pizza
+  2  (
+  3  pizza_id varchar2(4) constraint pizza_pk PRIMARY KEY,
+  4  pizza_type varchar2(10),
+  5  unit_price number
+  6  );
+
+Table created.
+
+SQL> 
+SQL> create table orders
+  2  (
+  3  order_no varchar2(5) constraint order_pk PRIMARY KEY,
+  4  cust_id varchar2(4) constraint cust_fk references customer(cust_id),
+  5  order_date date,
+  6  delv_date date,
+  7  total_amt number,
+  8  discount number,
+  9  bill_amt number
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> create table order_list
+  2  (
+  3  order_no varchar2(5) constraint order_fk references orders(order_no),
+  4  pizza_id varchar2(4) constraint pizza_fk references pizza(pizza_id),
+  5  qty number,
+  6  constraint pk PRIMARY KEY(order_no,pizza_id)
+  7  );
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM ------------------------------------------------------------------------------------------
+> 
+SQL> REM customer(cust_id, cust_name,address,phone)
+SQL> 
+SQL> insert into customer values('c001','Hari','32 RING ROAD,ALWARPET',9001200031);
+
+1 row created.
+
+SQL> insert into customer values('c002','Ashok','42 bull ROAD,numgambakkam',9444120003);
+
+1 row created.
+
+SQL> insert into customer values('c003','Raj','12a RING ROAD,ALWARPET',9840112003);
+
+1 row created.
+
+SQL> insert into customer values('c004','Raghu','P.H ROAD,Annanagar',9845712993);
+
+1 row created.
+
+SQL> insert into customer values('c005','Sindhu','100 feet ROAD,vadapalani',9840166677);
+
+1 row created.
+
+SQL> insert into customer values('c006','Brinda','GST ROAD, TAMBARAM', 9876543210);
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM pizza (pizza_id, pizza_type, unit_price)
+SQL> 
+SQL> insert into pizza values('p001','pan',130);
+
+1 row created.
+
+SQL> insert into pizza values('p002','grilled',230);
+
+1 row created.
+
+SQL> insert into pizza values('p003','italian',200);
+
+1 row created.
+
+SQL> insert into pizza values('p004','spanish',260);
+
+1 row created.
+
+SQL> 
+SQL> REM insert into pizza values('p005','supremo',250);
+SQL> 
+SQL> 
+SQL> 
+SQL> REM orders(order_no, cust_id, order_date ,delv_date)
+SQL> 
+SQL> insert into orders(order_no, cust_id, order_date ,delv_date) values('OP100','c001','28-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders(order_no, cust_id, order_date ,delv_date) values('OP200','c002','28-JUN-2015','30-JUN-2015');
+
+1 row created.
+
+SQL> insert into orders(order_no, cust_id, order_date ,delv_date) values('OP300','c003','29-JUN-2015','01-JUL-2015');
+
+1 row created.
+
+SQL> insert into orders(order_no, cust_id, order_date ,delv_date) values('OP400','c004','29-JUN-2015','01-JUL-2015');
+
+1 row created.
+
+SQL> insert into orders(order_no, cust_id, order_date ,delv_date) values('OP500','c001','29-JUN-2015','01-JUL-2015');
+
+1 row created.
+
+SQL> insert into orders(order_no, cust_id, order_date ,delv_date) values('OP600','c002','29-JUN-2015','01-JUL-2015');
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM order_list(order_no, pizza_id, qty)
+SQL> 
+SQL> insert into order_list values('OP100','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p002',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p003',1);
+
+1 row created.
+
+SQL> insert into order_list values('OP100','p004',5);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP200','p003',2);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p001',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP200','p004',8);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP300','p003',3);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP400','p001',3);
+
+1 row created.
+
+SQL> insert into order_list values('OP400','p004',1);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP500','p003',6);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p004',5);
+
+1 row created.
+
+SQL> insert into order_list values('OP500','p001',null);
+
+1 row created.
+
+SQL> 
+SQL> insert into order_list values('OP600','p002',3);
+
+1 row created.
+
+SQL> 
+SQL> --******************************************************
+SQL> 
+SQL> REM ***************************************************************
+SQL> REM 1. Write a stored function to display the total number of pizza's ordered by the given
+SQL> REM    order number
+SQL> REM ***************************************************************
+SQL> @F:\SEM4\DBMS\Assign6\1.sql
+SQL> DROP FUNCTION TotalPizza;
+
+Function dropped.
+
+SQL> 
+SQL> CREATE FUNCTION TotalPizza(ornum IN varchar2) RETURN int IS
+  2  num int;
+  3  BEGIN
+  4  SELECT SUM(qty) INTO num FROM order_list WHERE order_no=ornum;
+  5  RETURN num;
+  6  END;
+  7  /
+
+Function created.
+
+SQL> 
+SQL> SELECT order_no,TotalPizza(order_no) AS "Total pizza" from orders;
+
+ORDER Total pizza                                                               
+----- -----------                                                               
+OP100          11                                                               
+OP200          16                                                               
+OP300           3                                                               
+OP400           4                                                               
+OP500          11                                                               
+OP600           3                                                               
+
+6 rows selected.
+
+SQL> REM ***************************************************************
+SQL> REM 2. Write a PL/SQL block to calculate the total amount, discount and billable amount
+SQL> REM    (Amount to be paid) as given below:
+SQL> REM    For total amount > 2000 and total amount < 5000:  Discount=5%
+SQL> REM    For total amount > 5000 and total amount < 10000:  Discount=10%
+SQL> REM    For total amount > 10000:  Discount=20%
+SQL> REM    Calculate the billable amount (after the discount) and update the same in orders
+SQL> REM    table.
+SQL> REM    Bill Amount = Total – Discount.
+SQL> REM ***************************************************************
+SQL> @F:\SEM4\DBMS\Assign6\2.sql
+SQL> DROP PROCEDURE CalAmount;
+
+Procedure dropped.
+
+SQL> 
+SQL> CREATE Procedure CalAmount(ornum IN varchar2) IS
+  2  	     total int;
+  3  	     dis int;
+  4  	     bill real;
+  5  BEGIN
+  6  	     total:=0;
+  7  	     SELECT SUM(qty*unit_price) INTO total FROM order_list natural join pizza WHERE order_no=ornum;
+  8  	     IF (total>2000 AND total<=5000) THEN
+  9  		     dis:=5;
+ 10  	     ELSIF (total<=10000 AND total>5000) THEN
+ 11  		     dis:=10;
+ 12  	     ELSIF (total>10000) THEN
+ 13  		     dis:=20;
+ 14  	     ELSE
+ 15  		     dis:=0;
+ 16  	     END IF;
+ 17  	     bill := total - (total * dis * 0.01);
+ 18  	     UPDATE orders
+ 19  	     SET total_amt=total,discount=dis,bill_amt=bill
+ 20  	     WHERE order_no=ornum;
+ 21  END;
+ 22  /
+
+Procedure created.
+
+SQL> 
+SQL> 
+SQL> DECLARE
+  2  	     ord varchar2(5);
+  3  	     CURSOR orslct IS
+  4  		     SELECT order_no
+  5  		     FROM orders;
+  6  BEGIN
+  7  	     OPEN orslct;
+  8  	     FETCH orslct INTO ord;
+  9  	     WHILE orslct%FOUND LOOP
+ 10  		     CalAmount(ord);
+ 11  		     FETCH orslct INTO ord;
+ 12  	     END LOOP;
+ 13  	     CLOSE orslct;
+ 14  END;
+ 15  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> 
+SQL> SELECT * FROM ORDERS;
+
+ORDER CUST ORDER_DAT DELV_DATE  TOTAL_AMT   DISCOUNT   BILL_AMT                 
+----- ---- --------- --------- ---------- ---------- ----------                 
+OP100 c001 28-JUN-15 30-JUN-15       2350          5     2232.5                 
+OP200 c002 28-JUN-15 30-JUN-15       3260          5       3097                 
+OP300 c003 29-JUN-15 01-JUL-15        600          0        600                 
+OP400 c004 29-JUN-15 01-JUL-15        650          0        650                 
+OP500 c001 29-JUN-15 01-JUL-15       2500          5       2375                 
+OP600 c002 29-JUN-15 01-JUL-15        690          0        690                 
+
+6 rows selected.
+
+SQL> REM ***************************************************************
+SQL> REM 3. For the given order number, write a PL/SQL block to print the order as shown below:
+SQL> REM    Hint: Use the PL/SQL blocks created in 1 and 2.
+SQL> REM ***************************************************************
+SQL> @F:\SEM4\DBMS\Assign6\3.sql
+SQL> DROP PROCEDURE genbill;
+
+Procedure dropped.
+
+SQL> 
+SQL> CREATE PROCEDURE genbill(ornum IN varchar2) IS
+  2  	     cust_rec customer%rowtype;
+  3  	     CURSOR detail IS
+  4  		     SELECT pizza_type,qty,unit_price,qty*unit_price
+  5  		     FROM pizza NATURAL JOIN order_list WHERE order_no=ornum;
+  6  	     str varchar2(20);
+  7  	     a int;
+  8  	     b int;
+  9  	     c int;
+ 10  	     i int;
+ 11  	     d real;
+ 12  	     x date;
+ 13  BEGIN
+ 14  	     SELECT cust_id,cust_name,address,phone INTO cust_rec FROM customer natural join orders WHERE order_no=ornum;
+ 15  	     SELECT order_date INTO x FROM orders WHERE order_no=ornum;
+ 16  	     DBMS_OUTPUT.PUT_LINE('**************************************************************');
+ 17  	     DBMS_OUTPUT.PUT_LINE('Order Number: '||ornum||chr(9)||chr(9)||'Customer Name:'||cust_rec.cust_name);
+ 18  	     DBMS_OUTPUT.PUT_LINE('Order Date:'||x||chr(9)||chr(9)||'Phone: '||cust_rec.phone);
+ 19  	     DBMS_OUTPUT.PUT_LINE('**************************************************************');
+ 20  	     OPEN detail;
+ 21  	     FETCH detail INTO str,a,b,c;
+ 22  	     i:=1;
+ 23  	     DBMS_OUTPUT.PUT_LINE('SNo'||CHR(9)||'Pizza Type'||CHR(9)||'Qty'||CHR(9)||'Price'||CHR(9)||'Amount');
+ 24  	     WHILE detail%FOUND LOOP
+ 25  		     DBMS_OUTPUT.PUT_LINE(i||'.'||CHR(9)||str||CHR(9)||CHR(9)||a||CHR(9)||b||CHR(9)||c);
+ 26  		     i:=i+1;
+ 27  		     FETCH detail INTO str,a,b,c;
+ 28  	     END LOOP;
+ 29  	     CLOSE detail;
+ 30  	     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------------');
+ 31  	     SELECT TotalPizza(order_no) INTO a FROM orders WHERE order_no = ornum;
+ 32  	     CalAmount(ornum);
+ 33  	     SELECT total_amt,discount,bill_amt INTO b,c,d FROM orders WHERE order_no=ornum;
+ 34  	     DBMS_OUTPUT.PUT_LINE(CHR(9)||'Total = '||CHR(9)||a||CHR(9)||CHR(9)||b);
+ 35  	     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------------');
+ 36  	     DBMS_OUTPUT.PUT_LINE('Total Amount '||CHR(9)||CHR(9)||':Rs.'||b);
+ 37  	     DBMS_OUTPUT.PUT_LINE('Discount ('||c||'%)'||CHR(9)||CHR(9)||':Rs.'||b*c*0.01);
+ 38  	     DBMS_OUTPUT.PUT_LINE('------------------------------- ----');
+ 39  	     DBMS_OUTPUT.PUT_LINE('Amount to be paid'||CHR(9)||':Rs.'||d);
+ 40  	     DBMS_OUTPUT.PUT_LINE('------------------------------- ----');
+ 41  	     DBMS_OUTPUT.PUT_LINE('Great Offers! Discount up to 25% on DIWALI Festival Day...');
+ 42  	     DBMS_OUTPUT.PUT_LINE('**************************************************************');
+ 43  END;
+ 44  /
+
+Procedure created.
+
+SQL> 
+SQL> DECLARE
+  2  	     ornum VARCHAR2(10);
+  3  BEGIN
+  4  	     ornum:='&order_number';
+  5  	     SELECT order_no INTO ornum FROM ORDERS WHERE order_no=ornum;
+  6  	     IF sql%NOTFOUND THEN
+  7  		     DBMS_OUTPUT.PUT_LINE('Invalid Order Number');
+  8  	     ELSE
+  9  		     genbill(ornum);
+ 10  	     END IF;
+ 11  END;
+ 12  /
+Enter value for order_number: OP200
+old   4: 	ornum:='&order_number';
+new   4: 	ornum:='OP200';
+**************************************************************                  
+Order Number: OP200		Customer Name:Ashok                                        
+Order Date:28-JUN-15		Phone: 9444120003                                         
+**************************************************************                  
+SNo	Pizza Type	Qty	Price	Amount                                                 
+1.	pan		6	130	780                                                               
+2.	italian		2	200	400                                                           
+3.	spanish		8	260	2080                                                          
+----------------------------------------------------------                      
+	Total = 	16		3260                                                              
+----------------------------------------------------------                      
+Total Amount 		:Rs.3260                                                         
+Discount (5%)		:Rs.163                                                          
+------------------------------- ----                                            
+Amount to be paid	:Rs.3097                                                      
+------------------------------- ----                                            
+Great Offers! Discount up to 25% on DIWALI Festival Day...                      
+**************************************************************                  
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF

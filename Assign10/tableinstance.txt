@@ -1,0 +1,53 @@
+DROP TABLE Emp_Payroll;
+CREATE TABLE Emp_Payroll(
+	eid NUMBER(3) CONSTRAINT eid_pk primary key,
+	ename VARCHAR2(15) ,
+	dob DATE,
+	sex VARCHAR2(1),
+	designation VARCHAR2(15),
+	basic NUMBER(7,2),
+	da NUMBER(7,2),
+	hra NUMBER(7,2),
+	pf NUMBER(7,2),
+	mc NUMBER(7,2),
+	gross NUMBER(7,2),
+	tot_deduc NUMBER(7,2),
+	net_pay NUMBER(7,2)
+);
+
+
+CREATE OR REPLACE PROCEDURE calc_net 
+(id IN Emp_Payroll.eid % TYPE , bas IN Emp_Payroll.basic % TYPE) 
+IS
+	d NUMBER(7,2);
+	h NUMBER(7,2);
+	p NUMBER(7,2);
+	m NUMBER(7,2);
+	g NUMBER(7,2);
+	td NUMBER(7,2);
+	n NUMBER(7,2);
+
+BEGIN
+	d:=0.6*bas;
+	h:=0.11*bas;
+	p:=0.04*bas;
+	m:=0.03*bas;
+	g:=bas + d + h;
+	td:=p+m;
+	n:=g-td;
+	UPDATE Emp_Payroll
+	SET da = d,hra=h,pf=p,mc=m,gross=g,tot_deduc=td,net_pay=n
+	WHERE eid=id;
+END;
+/
+	sSQL> SELECT * FROM Emp_Payroll;
+
+       EID ENAME           DOB       S DESIGNATION          BASIC         DA        HRA         PF         MC      GROSS  TOT_DEDUC    NET_PAY                                                          
+---------- --------------- --------- - --------------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------                                                          
+         2 sasi            25-MAY-98 F Cashier              40000      24000       4400       1600       1200      68400       2800      65600                                                          
+         3 kumar           27-APR-01 M Clerk                30000      18000       3300       1200        900      51300       2100      49200                                                          
+         1 ram             23-JUN-00 M Manager              50000      30000       5500       2000       1500      85500       3500      82000                                                          
+         4 Ravi            03-MAR-95 M Clerk                33000      19800       3630       1320        990      56430       2310      54120                                                          
+         5 Kalavathi       13-MAR-98 F Asst.Manager         45000      27000       4950       1800       1350      76950       3150      73800                                                          
+
+SQL> SPOOL OFF

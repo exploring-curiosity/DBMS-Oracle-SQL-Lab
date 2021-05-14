@@ -1,0 +1,18 @@
+INSERT INTO Student VALUES
+(185001161, 
+'Siva',
+ '27-JUN-00',
+ 1234567891);
+
+create table Student
+( regno number(9) constraint r_pk PRIMARY KEY,
+name varchar2(15) constraint name_null NOT NULL,
+dob date constraint dob_null NOT NULL,
+phone number(10) constraint ph_UN UNIQUE 
+);
+
+select * from Student;
+
+drop table student;
+
+desc Student;

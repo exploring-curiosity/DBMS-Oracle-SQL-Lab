@@ -1,0 +1,575 @@
+SQL> @F:\SEM4\DBMS\Assign1\MusicStore_Create.sql
+SQL> drop table SungBy;
+
+Table dropped.
+
+SQL> drop table Artist;
+
+Table dropped.
+
+SQL> drop table Song;
+
+Table dropped.
+
+SQL> drop table Album;
+
+Table dropped.
+
+SQL> drop table Studio;
+
+Table dropped.
+
+SQL> drop table Musician;
+
+Table dropped.
+
+SQL> 
+SQL> 
+SQL> CREATE TABLE Musician
+  2  (
+  3  	     Mus_ID NUMBER(3) CONSTRAINT id_pk PRIMARY KEY,
+  4  	     Mus_name VARCHAR2(25),
+  5  	     Mus_birthplace VARCHAR2(25)
+  6  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE Studio
+  2  (
+  3  	     Studio_name VARCHAR2(25) CONSTRAINT std_name_pk PRIMARY KEY,
+  4  	     Studio_addr VARCHAR2(50) ,
+  5  	     Studio_Phone NUMBER(10)
+  6  );
+
+Table created.
+
+SQL> 
+SQL> rem question 7 done in line 6
+SQL> rem question 8 done in line 5
+SQL> CREATE TABLE Album
+  2  (
+  3  	     album_name VARCHAR2(25),
+  4  	     album_ID NUMBER(3) CONSTRAINT a_id_pk PRIMARY KEY,
+  5  	     year_of_release NUMBER(4) CONSTRAINT Album_release_check CHECK ( year_of_release > 1945),
+  6  	     no_of_tracks NUMBER(3) CONSTRAINT no_of_tracks_null NOT NULL,
+  7  	     stud_name VARCHAR2(25) CONSTRAINT stud_fk REFERENCES Studio(Studio_name) ,
+  8  	     album_genre VARCHAR2(20) CONSTRAINT al_genre_restriction CHECK (album_genre in ('CAR','DIV','MOV','POP')),
+  9  	     musician_id NUMBER(3) CONSTRAINT mus_id_fk REFERENCES Musician(Mus_ID)
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> rem question 8 done in line 9
+SQL> 
+SQL> CREATE TABLE Song
+  2  (
+  3  	     alb_ID NUMBER(3) CONSTRAINT a_id_fk REFERENCES Album(album_ID) ,
+  4  	     track_no NUMBER(3) ,
+  5  	     Song_name VARCHAR2(25),
+  6  	     Song_len NUMBER(3) ,
+  7  	     Song_genre VARCHAR2(25) CONSTRAINT song_genre_restriction CHECK(Song_genre in ('PHI','REL','LOV','DEV','PAT')),
+  8  	     CONSTRAINT song_alid_track_pk PRIMARY KEY (alb_ID,track_no),
+  9  	     CONSTRAINT song_len_check_7 CHECK((Song_len >= 7 AND Song_genre='PAT' ) OR (Song_genre in ('PHI','REL','LOV','DEV')))
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> rem question 6 done in line 4
+SQL> 
+SQL> CREATE TABLE Artist
+  2  (
+  3  	     artist_ID NUMBER(3) CONSTRAINT art_id_pk PRIMARY KEY,
+  4  	     artist_name VARCHAR2(25) CONSTRAINT art_name_null NOT NULL
+  5  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE SungBy
+  2  (
+  3  	     al_ID NUMBER(3) ,
+  4  	     ar_ID NUMBER(3) CONSTRAINT ar_id_fk REFERENCES Artist(artist_ID),
+  5  	     track NUMBER(3) ,
+  6  	     recording_date DATE,
+  7  	     CONSTRAINT al_id__track_fk FOREIGN KEY (al_ID,track) REFERENCES Song(alb_ID,track_no) ,
+  8  	     CONSTRAINT Sung_by_pk PRIMARY KEY (al_ID,ar_ID,track)
+  9  );
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> rem Populating Tables
+SQL> 
+SQL> INSERT INTO Musician VALUES
+  2  (
+  3  	     123,
+  4  	     'Rocky',
+  5  	     'Delhi'
+  6  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Musician VALUES
+  2  (
+  3  	     124,
+  4  	     'BeeBom',
+  5  	     'Sweden'
+  6  );
+
+1 row created.
+
+SQL> INSERT INTO Musician VALUES
+  2  (
+  3  	     125,
+  4  	     'Sri charan',
+  5  	     'Chennai'
+  6  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM Musician;
+
+    MUS_ID MUS_NAME                  MUS_BIRTHPLACE                                                                                                                                                     
+---------- ------------------------- -------------------------                                                                                                                                          
+       123 Rocky                     Delhi                                                                                                                                                              
+       124 BeeBom                    Sweden                                                                                                                                                             
+       125 Sri charan                Chennai                                                                                                                                                            
+
+SQL> 
+SQL> INSERT INTO Studio VALUES
+  2  (
+  3  	     'Kraken',
+  4  	     'Beijing',
+  5  	     9923514674
+  6  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Studio VALUES
+  2  (
+  3  	     'Moana',
+  4  	     'Goa',
+  5  	     9563443774
+  6  );
+
+1 row created.
+
+SQL> INSERT INTO Studio VALUES
+  2  (
+  3  	     'Param',
+  4  	     'Mumbai',
+  5  	     9821476544
+  6  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM Studio;
+
+STUDIO_NAME               STUDIO_ADDR                                        STUDIO_PHONE                                                                                                               
+------------------------- -------------------------------------------------- ------------                                                                                                               
+Kraken                    Beijing                                              9923514674                                                                                                               
+Moana                     Goa                                                  9563443774                                                                                                               
+Param                     Mumbai                                               9821476544                                                                                                               
+
+SQL> 
+SQL> INSERT INTO Album VALUES
+  2  (
+  3  	     'Karoke',
+  4  	     456,
+  5  	     1992,
+  6  	     6,
+  7  	     'Param',
+  8  	     'POP',
+  9  	     124
+ 10  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Album VALUES
+  2  (
+  3  	     'Gaka',
+  4  	     457,
+  5  	     1982,
+  6  	     18,
+  7  	     'Moana',
+  8  	     'DIV',
+  9  	     125
+ 10  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Album VALUES
+  2  (
+  3  	     'Mojang',
+  4  	     458,
+  5  	     2012,
+  6  	     3,
+  7  	     'Kraken',
+  8  	     'MOV',
+  9  	     123
+ 10  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM Album;
+
+ALBUM_NAME                  ALBUM_ID YEAR_OF_RELEASE NO_OF_TRACKS STUD_NAME                 ALBUM_GENRE          MUSICIAN_ID                                                                            
+------------------------- ---------- --------------- ------------ ------------------------- -------------------- -----------                                                                            
+Karoke                           456            1992            6 Param                     POP                          124                                                                            
+Gaka                             457            1982           18 Moana                     DIV                          125                                                                            
+Mojang                           458            2012            3 Kraken                    MOV                          123                                                                            
+
+SQL> 
+SQL> INSERT INTO Song VALUES
+  2  (
+  3  	     456,
+  4  	     897,
+  5  	     'Despacito',
+  6  	     4,
+  7  	     'LOV'
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Song VALUES
+  2  (
+  3  	     458,
+  4  	     898,
+  5  	     'Rubble',
+  6  	     12,
+  7  	     'PAT'
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Song VALUES
+  2  (
+  3  	     457,
+  4  	     896,
+  5  	     'Magico',
+  6  	     7,
+  7  	     'DEV'
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM Song;
+
+    ALB_ID   TRACK_NO SONG_NAME                   SONG_LEN SONG_GENRE                                                                                                                                   
+---------- ---------- ------------------------- ---------- -------------------------                                                                                                                    
+       456        897 Despacito                          4 LOV                                                                                                                                          
+       458        898 Rubble                            12 PAT                                                                                                                                          
+       457        896 Magico                             7 DEV                                                                                                                                          
+
+SQL> 
+SQL> INSERT INTO Artist VALUES
+  2  (
+  3  	     101,
+  4  	     'Margarita'
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Artist VALUES
+  2  (
+  3  	     102,
+  4  	     'Justin Beaber'
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO Artist VALUES
+  2  (
+  3  	     103,
+  4  	     'Jane Wills'
+  5  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM Artist;
+
+ ARTIST_ID ARTIST_NAME                                                                                                                                                                                  
+---------- -------------------------                                                                                                                                                                    
+       101 Margarita                                                                                                                                                                                    
+       102 Justin Beaber                                                                                                                                                                                
+       103 Jane Wills                                                                                                                                                                                   
+
+SQL> 
+SQL> INSERT INTO SungBy VALUES
+  2  (
+  3  	     456,
+  4  	     102,
+  5  	     897,
+  6  	     '12-JUN-00'
+  7  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO SungBy VALUES
+  2  (
+  3  	     458,
+  4  	     101,
+  5  	     898,
+  6  	     '19-MAY-83'
+  7  );
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO SungBy VALUES
+  2  (
+  3  	     457,
+  4  	     103,
+  5  	     896,
+  6  	     '29-DEC-91'
+  7  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM SungBy;
+
+     AL_ID      AR_ID      TRACK RECORDING                                                                                                                                                              
+---------- ---------- ---------- ---------                                                                                                                                                              
+       456        102        897 12-JUN-00                                                                                                                                                              
+       458        101        898 19-MAY-83                                                                                                                                                              
+       457        103        896 29-DEC-91                                                                                                                                                              
+
+SQL> @F:\SEM4\DBMS\Assign1\MusicStore_Alter.sql
+SQL> 
+SQL> rem question 10
+SQL> 
+SQL> ALTER TABLE Artist
+  2  ADD (gender char(1));
+
+Table altered.
+
+SQL> 
+SQL> rem Question 11
+SQL> 
+SQL> ALTER TABLE Song
+  2  DROP CONSTRAINT sname_null;
+DROP CONSTRAINT sname_null
+                *
+ERROR at line 2:
+ORA-02443: Cannot drop constraint  - nonexistent constraint 
+
+
+SQL> 
+SQL> ALTER TABLE Song
+  2  MODIFY (Song_name VARCHAR2(70) CONSTRAINT sname_null NOT NULL);
+
+Table altered.
+
+SQL> 
+SQL> rem Question 12
+SQL> 
+SQL> ALTER TABLE Studio
+  2  ADD CONSTRAINT ph_un
+  3  UNIQUE (Studio_Phone);
+
+Table altered.
+
+SQL> 
+SQL> rem Question 13
+SQL> 
+SQL> ALTER TABLE SungBy
+  2  MODIFY (recording_date DATE CONSTRAINT rdate_null NOT NULL);
+
+Table altered.
+
+SQL> 
+SQL> rem question 14
+SQL> 
+SQL> ALTER TABLE Song
+  2  DROP CONSTRAINT song_genre_restriction;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE Song
+  2  MODIFY (Song_genre VARCHAR2(25) CONSTRAINT song_genre_restriction CHECK (Song_genre in ('PHI','REL','LOV','DEV','PAT','NAT')) );
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> ALTER TABLE Song
+  2  DROP CONSTRAINT song_len_check_7;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE Song
+  2  ADD CONSTRAINT song_len_check_7
+  3  CHECK((Song_len >= 7 AND Song_genre='PAT' ) OR (Song_genre in ('PHI','REL','LOV','DEV','NAT')));
+
+Table altered.
+
+SQL> 
+SQL> rem question 15
+SQL> 
+SQL> ALTER TABLE SungBy
+  2  DROP CONSTRAINT al_id__track_fk;
+
+Table altered.
+
+SQL> 
+SQL> ALTER TABLE SungBy
+  2  ADD CONSTRAINT al_id__track_fk FOREIGN KEY (al_ID,track) REFERENCES Song(alb_ID,track_no) ON DELETE CASCADE;
+
+Table altered.
+
+SQL> 
+SQL> rem Question 10 new entry with gender
+SQL> 
+SQL> INSERT INTO Artist VALUES
+  2  (
+  3  	     104,
+  4  	     'Jane Wills',
+  5  	     'M'
+  6  );
+
+1 row created.
+
+SQL> 
+SQL> rem Question 11 new Entry with longer Song name width
+SQL> 
+SQL> INSERT INTO Song VALUES
+  2  (
+  3  	     456,
+  4  	     897,
+  5  	     'Vinnai Thaandi Varuvaaiya By ilayaraja',
+  6  	     4,
+  7  	     'REL'
+  8  );
+INSERT INTO Song VALUES
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SONG_ALID_TRACK_PK) violated 
+
+
+SQL> 
+SQL> rem Question 12 new Entry Violated constraint Phone number
+SQL> 
+SQL> INSERT INTO Studio VALUES
+  2  (
+  3  	     'ken',
+  4  	     'Bing',
+  5  	     9923514674
+  6  );
+INSERT INTO Studio VALUES
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.PH_UN) violated 
+
+
+SQL> 
+SQL> rem Question 13 new entry violated constraint Date null
+SQL> 
+SQL> INSERT INTO SungBy VALUES
+  2  (
+  3  	     457,
+  4  	     101,
+  5  	     896,
+  6  	     null
+  7  );
+	null
+	*
+ERROR at line 6:
+ORA-01400: cannot insert NULL into ("SYSTEM"."SUNGBY"."RECORDING_DATE") 
+
+
+SQL> 
+SQL> rem Question 14 new entry new genre added NAT
+SQL> 
+SQL> INSERT INTO Song VALUES
+  2  (
+  3  	     456,
+  4  	     899,
+  5  	     'Hindu siddhate',
+  6  	     3,
+  7  	     'NAT'
+  8  );
+
+1 row created.
+
+SQL> 
+SQL> SELECT * FROM Musician;
+
+    MUS_ID MUS_NAME                  MUS_BIRTHPLACE                                                                                                                                                     
+---------- ------------------------- -------------------------                                                                                                                                          
+       123 Rocky                     Delhi                                                                                                                                                              
+       124 BeeBom                    Sweden                                                                                                                                                             
+       125 Sri charan                Chennai                                                                                                                                                            
+
+SQL> 
+SQL> SELECT * FROM Studio;
+
+STUDIO_NAME               STUDIO_ADDR                                        STUDIO_PHONE                                                                                                               
+------------------------- -------------------------------------------------- ------------                                                                                                               
+Kraken                    Beijing                                              9923514674                                                                                                               
+Moana                     Goa                                                  9563443774                                                                                                               
+Param                     Mumbai                                               9821476544                                                                                                               
+
+SQL> 
+SQL> SELECT * FROM Album;
+
+ALBUM_NAME                  ALBUM_ID YEAR_OF_RELEASE NO_OF_TRACKS STUD_NAME                 ALBUM_GENRE          MUSICIAN_ID                                                                            
+------------------------- ---------- --------------- ------------ ------------------------- -------------------- -----------                                                                            
+Karoke                           456            1992            6 Param                     POP                          124                                                                            
+Gaka                             457            1982           18 Moana                     DIV                          125                                                                            
+Mojang                           458            2012            3 Kraken                    MOV                          123                                                                            
+
+SQL> 
+SQL> SELECT * FROM Song;
+
+    ALB_ID   TRACK_NO SONG_NAME                                                                SONG_LEN SONG_GENRE                                                                                      
+---------- ---------- ---------------------------------------------------------------------- ---------- -------------------------                                                                       
+       456        897 Despacito                                                                       4 LOV                                                                                             
+       458        898 Rubble                                                                         12 PAT                                                                                             
+       457        896 Magico                                                                          7 DEV                                                                                             
+       456        899 Hindu siddhate                                                                  3 NAT                                                                                             
+
+SQL> 
+SQL> SELECT * FROM Artist;
+
+ ARTIST_ID ARTIST_NAME               G                                                                                                                                                                  
+---------- ------------------------- -                                                                                                                                                                  
+       101 Margarita                                                                                                                                                                                    
+       102 Justin Beaber                                                                                                                                                                                
+       103 Jane Wills                                                                                                                                                                                   
+       104 Jane Wills                M                                                                                                                                                                  
+
+SQL> 
+SQL> SELECT * FROM SungBy;
+
+     AL_ID      AR_ID      TRACK RECORDING                                                                                                                                                              
+---------- ---------- ---------- ---------                                                                                                                                                              
+       456        102        897 12-JUN-00                                                                                                                                                              
+       458        101        898 19-MAY-83                                                                                                                                                              
+       457        103        896 29-DEC-91                                                                                                                                                              
+
+SQL> Spool off

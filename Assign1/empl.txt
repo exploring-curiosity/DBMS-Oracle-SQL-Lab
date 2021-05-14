@@ -1,0 +1,5 @@
+SQL> F:\SEM4\DBMS\Assign1\employees.sql
+SP2-0734: unknown command beginning "F:\SEM4\DB..." - rest of line ignored.
+SQL> @F:\SEM4\DBMS\Assign1\employees.sql
+SP2-0310: unable to open file "F:\SEM4\DBMS\Assign1\employees.sql"
+SQL> Spool off

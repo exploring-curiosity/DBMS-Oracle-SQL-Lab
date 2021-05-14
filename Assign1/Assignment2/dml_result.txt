@@ -1,0 +1,213 @@
+--*****************************************************
+-- ASSIGNMENT::2                        B.Senthil Kumar
+-- UCS1412 - DATABASE LAB		Asst. Prof
+-- DML FUNDAMENTALS	     Computer Science Department
+--            		     SSN College of Engineering 
+--	                   	     senthil@ssn.edu.in
+--*****************************************************
+-- 	          DML FUNDAMENTALS RESULTSET
+-- 
+--                January 10, 2020
+--*****************************************************
+
+11)
+
+FIRST_NAME           JOB_ID         SALARY
+-------------------- ---------- ----------
+Steven               AD_PRES         24000
+Neena                AD_VP           17000
+Lex                  AD_VP           17000
+Alexander            IT_PROG          9000
+Bruce                IT_PROG          6000
+David                IT_PROG          4800
+Valli                IT_PROG          4800
+Diana                IT_PROG          4200
+Kevin                ST_MAN           5800
+Trenna               ST_CLERK         3500
+Curtis               ST_CLERK         3100
+
+FIRST_NAME           JOB_ID         SALARY
+-------------------- ---------- ----------
+Randall              ST_CLERK         2600
+Peter                ST_CLERK         2500
+Eleni                SA_MAN          10500
+Ellen                SA_REP          11000
+Jonathon             SA_REP           8600
+Kimberely            SA_REP           7000
+Jennifer             AD_ASST          4400
+Michael              MK_MAN          13000
+Pat                  MK_REP           6000
+Shelley              AC_MGR          12000
+William              AC_ACCOUNT       8300
+
+22 rows selected.
+
+---------------------------------------------------------------------------------------------
+
+12)
+SQL> /
+
+EMPLOYEE_ID FULL NAME                                      MONTHLY SAL ANNUAL SALARY
+----------- ---------------------------------------------- ----------- -------------
+        103 Alexander Hunold                                      9000        108000
+        104 Bruce Ernst                                           6000         72000
+        142 Curtis Davies                                         3100         37200
+        105 David Austin                                          4800         57600
+        107 Diana Lorentz                                         4200         50400
+        149 Eleni Zlotkey                                        10500        126000
+        174 Ellen Abel                                           11000        132000
+        200 Jennifer Whalen                                       4400         52800
+        176 Jonathon Taylor                                       8600        103200
+        124 Kevin Mourgos                                         5800         69600
+        178 Kimberely Grant                                       7000         84000
+
+EMPLOYEE_ID FULL NAME                                      MONTHLY SAL ANNUAL SALARY
+----------- ---------------------------------------------- ----------- -------------
+        102 Lex De Haan                                          17000        204000
+        201 Michael Hartstein                                    13000        156000
+        101 Neena Kochhar                                        17000        204000
+        202 Pat Fay                                               6000         72000
+        144 Peter Vargas                                          2500         30000
+        143 Randall Matos                                         2600         31200
+        205 Shelley Higgins                                      12000        144000
+        100 Steven King                                          24000        288000
+        141 Trenna Rajs                                           3500         42000
+        106 Valli Pataballa                                       4800         57600
+        206 William Gietz                                         8300         99600
+
+22 rows selected.
+
+
+---------------------------------------------------------------------------------------------
+
+13) 
+
+JOB_ID
+----------
+IT_PROG
+AC_MGR
+AC_ACCOUNT
+ST_MAN
+AD_ASST
+AD_VP
+SA_MAN
+MK_MAN
+AD_PRES
+SA_REP
+MK_REP
+
+JOB_ID
+----------
+ST_CLERK
+
+12 rows selected.
+
+---------------------------------------------------------------------------------------------
+
+14)
+SQL> /
+
+EMPLOYEE_ID FIRST_NAME           JOB_ID         SALARY COMMISSION_PCT
+----------- -------------------- ---------- ---------- --------------
+        149 Eleni                SA_MAN          10500             .2
+        174 Ellen                SA_REP          11000             .3
+        176 Jonathon             SA_REP           8600             .2
+        178 Kimberely            SA_REP           7000            .15
+
+---------------------------------------------------------------------------------------------
+
+15)
+SQL> /
+
+EMPLOYEE_ID FIRST_NAME           JOB_ID         SALARY DEPARTMENT_ID
+----------- -------------------- ---------- ---------- -------------
+        124 Kevin                ST_MAN           5800            50
+        149 Eleni                SA_MAN          10500            80
+        201 Michael              MK_MAN          13000            20
+
+---------------------------------------------------------------------------------------------
+
+16)
+SQL> /
+
+EMPLOYEE_ID FIRST_NAME           HIRE_DATE JOB_ID         SALARY DEPARTMENT_ID
+----------- -------------------- --------- ---------- ---------- -------------
+        149 Eleni                29-JAN-00 SA_MAN          10500            80
+        124 Kevin                16-NOV-99 ST_MAN           5800            50
+        102 Lex                  13-JAN-93 AD_VP           17000            90
+        201 Michael              17-FEB-96 MK_MAN          13000            20
+        101 Neena                21-SEP-89 AD_VP           17000            90
+        205 Shelley              07-JUN-94 AC_MGR          12000           110
+        100 Steven               17-JUN-87 AD_PRES         24000            90
+
+7 rows selected.
+
+---------------------------------------------------------------------------------------------
+
+17)
+SQL> /
+
+FIRST_NAME               SALARY HIRE_DATE DEPARTMENT_ID
+-------------------- ---------- --------- -------------
+Alexander                  9000 03-JAN-90            60
+Jonathon                   8600 24-MAR-98            80
+Kevin                      5800 16-NOV-99            50
+Kimberely                  7000 24-MAY-99
+Shelley                   12000 07-JUN-94           110
+---------------------------------------------------------------------------------------------
+
+18)
+SQL> /
+
+EMPLOYEE_ID FIRST_NAME           HIRE_DATE    EXP-YRS EXP-MONTHS
+----------- -------------------- --------- ---------- ----------
+        107 Diana                07-FEB-99         20         11
+        124 Kevin                16-NOV-99         20          2
+        149 Eleni                29-JAN-00         19         11
+        178 Kimberely            24-MAY-99         20          7
+
+
+---------------------------------------------------------------------------------------------
+
+19)
+SQL> /
+
+NO OF DEPTS
+-----------
+          7
+---------------------------------------------------------------------------------------------
+
+20)
+SQL> /
+
+      YEAR    NO-EMPS
+---------- ----------
+      1987          2
+      1989          1
+      1990          1
+      1991          1
+      1993          1
+      1994          2
+      1995          1
+      1996          2
+      1997          3
+      1998          4
+      1999          3
+
+      YEAR    NO-EMPS
+---------- ----------
+      2000          1
+
+12 rows selected.
+---------------------------------------------------------------------------------------------
+
+21)
+SQL> /
+
+DEPARTMENT_ID    MIN_SAL    MAX_SAL    AVG_SAL      TOTAL
+------------- ---------- ---------- ---------- ----------
+           90      17000      24000 19333.3333          3
+           80       8600      11000 10033.3333          3
+          110       8300      12000      10150          2
+
+---------------------------------------------------------------------------------------------
